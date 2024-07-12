@@ -62,7 +62,7 @@ async def get_students(db: Session = Depends(get_db)):
     return db.query(models.Student).all()
 
 @router_v1.get('/students/{student_id}')
-async def get_student(id: int, db: Session = Depends(get_db)):
+async def get_students(id: int, db: Session = Depends(get_db)):
     return db.query(models.Student).filter(models.Student.id == id).first()
 
 @router_v1.post('/students')
@@ -74,6 +74,24 @@ async def create_student(student: dict, response: Response, db: Session = Depend
     db.refresh(newstudent)
     response.status_code = 201
     return newstudent
+
+@router_v1.patch('/students/{student_id}')
+app.include_router(router_v1)
+async def update_student(id: int, student: dict, db: Session = Depends(get_db)):
+    db_item = db.query(models.Student).filter(models.Student.id == id).first()
+    for key, value in student.items():
+            setattr(db_item, key, value)
+    db.commit()
+    db.refresh(db_item)
+    # response.status_code = 201
+    return db_item
+
+@router_v1.delete('/students/{student_id}')
+async def delete_student(id: int, db: Session = Depends(get_db)):
+    db_item = db.query(models.Student).filter(models.Student.id == id).first()
+    db.delete(db_item)
+    db.commit()
+    return "Delete successfully!!!"
 
 app.include_router(router_v1)
 
