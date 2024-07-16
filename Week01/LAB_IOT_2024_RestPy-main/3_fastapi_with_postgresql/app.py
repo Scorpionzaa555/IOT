@@ -76,7 +76,7 @@ async def create_student(student: dict, response: Response, db: Session = Depend
     return newstudent
 
 @router_v1.patch('/students/{student_id}')
-app.include_router(router_v1)
+# app.include_router(router_v1)
 async def update_student(id: int, student: dict, db: Session = Depends(get_db)):
     db_item = db.query(models.Student).filter(models.Student.id == id).first()
     for key, value in student.items():

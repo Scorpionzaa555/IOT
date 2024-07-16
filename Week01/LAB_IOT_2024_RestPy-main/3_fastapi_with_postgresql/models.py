@@ -16,9 +16,9 @@ class Student(Base):
     __tablename__ = 'students'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(CHAR, index=True)
-    surname = Column(CHAR, index=True)
-    bod = Column(CHAR, index=True)
-    sex = Column(CHAR, index=True)
+    name = Column(String, index=True)
+    surname = Column(String, index=True)
+    bod = Column(String, index=True)
+    sex = Column(String, index=True)
     age = Column(Integer, index=True)
 
