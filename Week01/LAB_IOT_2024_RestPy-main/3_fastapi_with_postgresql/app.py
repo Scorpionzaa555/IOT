@@ -57,6 +57,23 @@ async def create_book(book: dict, response: Response, db: Session = Depends(get_
 # async def delete_book(book_id: int, db: Session = Depends(get_db)):
 #     pass
 
+@router_v1.patch('/books/{book_id}')
+async def update_book(book_id: int, book: dict, db: Session = Depends(get_db)):
+    db_item = db.query(models.Book).filter(models.Book.id == book_id).first()
+    for key, value in book.items():
+            setattr(db_item, key, value)
+    db.commit()
+    db.refresh(db_item)
+    # response.status_code = 201
+    return db_item
+
+@router_v1.delete('/books/{book_id}')
+async def delete_book(book_id: int,db: Session = Depends(get_db)):
+    db_item = db.query(models.Book).filter(models.Book.id == book_id).first()
+    db.delete(db_item)
+    db.commit()
+    return "Delete successfully !!!"
+
 @router_v1.get('/students')
 async def get_students(db: Session = Depends(get_db)):
     return db.query(models.Student).all()
