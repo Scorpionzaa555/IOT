@@ -68,7 +68,7 @@ async def get_students(id: int, db: Session = Depends(get_db)):
 @router_v1.post('/students')
 async def create_student(student: dict, response: Response, db: Session = Depends(get_db)):
     # TODO: Add validation
-    newstudent = models.Student(id=student['id'], name=student['name'], surname=student['surname'], bod=student['bod'], sex=student['sex'], age=student['age'])
+    newstudent = models.Student(name=student['name'], surname=student['surname'], bod=student['bod'], sex=student['sex'], age=student['age'])
     db.add(newstudent)
     db.commit()
     db.refresh(newstudent)
